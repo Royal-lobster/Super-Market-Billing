@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <title>Billing</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        // Add a new product entry form
+        $("#addProductBtn").click(function () {
+          // create a new index from last index
+          var lastname_id = $(".input-form input[type=text]:nth-child(1)").last().attr("id");
+          var split_id = lastname_id.split("_");
+          var index = Number(split_id[1]) + 1;
+
+          // Create clone
+          var newel = $(".input-form:last").clone(true);
+
+          // Set id of new element
+          $(newel)
+            .find("input[type=text]:nth-child(1)")
+            .attr("id", "name_" + index);
+          $(newel)
+            .find("input[type=text]:nth-child(2)")
+            .attr("id", "email_" + index);
+          $(newel)
+            .find("input[type=text]:nth-child(3)")
+            .attr("id", "email_" + index);
+
+          // Set name of new element
+          $(newel)
+            .find("input[type=text]:nth-child(1)")
+            .attr("name", "name_" + index);
+          $(newel)
+            .find("input[type=text]:nth-child(2)")
+            .attr("name", "email_" + index);
+          $(newel)
+            .find("input[type=text]:nth-child(3)")
+            .attr("name", "email_" + index);
+
+          // Set value
+          $(newel).find("input[type=text]:nth-child(1)").val("");
+          $(newel).find("input[type=text]:nth-child(2)").val("");
+          $(newel).find("input[type=text]:nth-child(3)").val("");
+
+          // Insert element
+          $(newel).insertAfter(".input-form:last");
+        });
+
+        // Calculate Total Bill
+        $("#cart").on("submit", function (e) {
+          e.preventDefault();
+          data = $("#cart").serializeArray();
+          noOfItems = data.length / 3;
+          var total = 0;
+          for (var i = 0; i < noOfItems; i++) {
+            var quantity = data[i * 3 + 1].value;
+            var price = data[i * 3 + 2].value;
+            total += quantity * price;
+          }
+          alert("Total bill : " + total);
+        });
+      });
+    </script>
+  </head>
+  <body style="margin: 0 auto; max-width: 600px">
+    <h1 align="center">The Local Super Market</h1>
+    <form id="cart">
+      <fieldset class="input-form" style="margin: 20px 0">
+        <input type="text" placeholder="Enter name" name="name_1" id="name_1" style="display: block; margin: 10px" />
+        <input
+          type="text"
+          placeholder="Enter quantity"
+          name="quantity_1"
+          id="quantity_1"
+          style="display: block; margin: 10px"
+        />
+        <input type="text" placeholder="Enter price" name="price_1" id="price_1" style="display: block; margin: 10px" />
+        <legend>Product</legend>
+      </fieldset>
+
+      <div>
+        <input type="button" id="addProductBtn" value="Add Product" />
+        <button id="caluculateBtn">Calculate cost</button>
+      </div>
+    </form>
+  </body>
+</html>
